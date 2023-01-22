@@ -1,0 +1,251 @@
+diff --git a/node_modules/next/dist/build/webpack-config.js b/node_modules/next/dist/build/webpack-config.js
+index 417e8b2..949b62a 100644
+--- a/node_modules/next/dist/build/webpack-config.js
++++ b/node_modules/next/dist/build/webpack-config.js
+@@ -1747,9 +1747,7 @@ const EXTERNAL_PACKAGES = require("../lib/server-external-packages.json");
+ const NEXT_PROJECT_ROOT = _path.default.join(__dirname, "..", "..");
+ const NEXT_PROJECT_ROOT_DIST = _path.default.join(NEXT_PROJECT_ROOT, "dist");
+ const NEXT_PROJECT_ROOT_DIST_CLIENT = _path.default.join(NEXT_PROJECT_ROOT_DIST, "client");
+-if (parseInt(_react.default.version) < 18) {
+-    throw new Error("Next.js requires react >= 18.2.0 to be installed.");
+-}
++
+ const babelIncludeRegexes = [
+     /next[\\/]dist[\\/](esm[\\/])?shared[\\/]lib/,
+     /next[\\/]dist[\\/](esm[\\/])?client/,
+diff --git a/node_modules/next/dist/server/render.js b/node_modules/next/dist/server/render.js
+index ebd8a9b..f3537c4 100644
+--- a/node_modules/next/dist/server/render.js
++++ b/node_modules/next/dist/server/render.js
+@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
+ });
+ exports.renderToHTML = renderToHTML;
+ var _react = _interopRequireDefault(require("react"));
+-var _serverBrowser = _interopRequireDefault(require("react-dom/server.browser"));
++var _serverBrowser = _interopRequireDefault(require("react-dom/server"));
+ var _styledJsx = require("styled-jsx");
+ var _constants = require("../lib/constants");
+ var _constants1 = require("../shared/lib/constants");
+@@ -654,7 +654,7 @@ async function renderToHTML(req, res, pathname, query, renderOpts) {
+                     if (renderShell) {
+                         renderShell(App, Component);
+                     }
+-                    const html = await renderToString(/*#__PURE__*/ _react.default.createElement(Body, null, /*#__PURE__*/ _react.default.createElement(ErrorDebug, {
++                    const html = _serverBrowser.default.renderToString(/*#__PURE__*/ _react.default.createElement(Body, null, /*#__PURE__*/ _react.default.createElement(ErrorDebug, {
+                         error: ctx.err
+                     })));
+                     return {
+@@ -676,7 +676,7 @@ async function renderToHTML(req, res, pathname, query, renderOpts) {
+                         };
+                     });
+                 }
+-                const html1 = await renderToString(/*#__PURE__*/ _react.default.createElement(Body, null, /*#__PURE__*/ _react.default.createElement(AppContainerWithIsomorphicFiberStructure, null, renderPageTree(EnhancedApp, EnhancedComponent, {
++                const html1 = _serverBrowser.default.renderToString(/*#__PURE__*/ _react.default.createElement(Body, null, /*#__PURE__*/ _react.default.createElement(AppContainerWithIsomorphicFiberStructure, null, renderPageTree(EnhancedApp, EnhancedComponent, {
+                     ...props1,
+                     router
+                 }))));
+@@ -711,6 +711,43 @@ async function renderToHTML(req, res, pathname, query, renderOpts) {
+                 router
+             })));
+         };
++				if (!process.env.__NEXT_REACT_ROOT) {
++            // Enabling react legacy rendering mode: __NEXT_REACT_ROOT = false
++            if (Document.getInitialProps) {
++                const documentInitialProps = await loadDocumentInitialProps();
++                if (documentInitialProps === null) return null;
++                const { docProps , documentCtx  } = documentInitialProps;
++                return {
++                    bodyResult: (suffix)=>(0, _nodeWebStreamsHelper).streamFromArray([
++                            docProps.html,
++                            suffix
++                        ]),
++                    documentElement: (htmlProps)=>/*#__PURE__*/ _react.default.createElement(Document, Object.assign({}, htmlProps, docProps)),
++                    head: docProps.head,
++                    headTags: [],
++                    styles: docProps.styles
++                };
++            } else {
++                const content = renderContent(App, Component);
++                // for non-concurrent rendering we need to ensure App is rendered
++                // before _document so that updateHead is called/collected before
++                // rendering _document's head
++                const result = _serverBrowser.default.renderToString(content);
++                const bodyResult = (suffix)=>(0, _nodeWebStreamsHelper).streamFromArray([
++                        result,
++                        suffix
++                    ]);
++                const styles = jsxStyleRegistry.styles();
++                jsxStyleRegistry.flush();
++                return {
++                    bodyResult,
++                    documentElement: ()=>Document(),
++                    head,
++                    headTags: [],
++                    styles
++                };
++            }
++        } else {
+         // Always using react concurrent rendering mode with required react version 18.x
+         const renderShell1 = async (EnhancedApp, EnhancedComponent)=>{
+             const content = renderContent(EnhancedApp, EnhancedComponent);
+@@ -726,6 +763,7 @@ async function renderToHTML(req, res, pathname, query, renderOpts) {
+                 }
+             });
+         };
++
+         const createBodyResult = (initialStream, suffix)=>{
+             // this must be called inside bodyResult so appWrappers is
+             // up to date when `wrapApp` is called
+@@ -783,6 +821,7 @@ async function renderToHTML(req, res, pathname, query, renderOpts) {
+             styles
+         };
+     };
++		}
+     const documentResult = await renderDocument();
+     if (!documentResult) {
+         return null;
+@@ -859,7 +898,7 @@ async function renderToHTML(req, res, pathname, query, renderOpts) {
+     }, /*#__PURE__*/ _react.default.createElement(_htmlContext.HtmlContext.Provider, {
+         value: htmlProps1
+     }, documentResult.documentElement(htmlProps1)));
+-    const documentHTML = await renderToString(document);
++    const documentHTML = _serverBrowser.default.renderToString(document);
+     if (process.env.NODE_ENV !== "production") {
+         const nonRenderedComponents = [];
+         const expectedDocComponents = [
+diff --git a/node_modules/next/dist/shared/lib/dynamic.js b/node_modules/next/dist/shared/lib/dynamic.js
+index f8f2711..f8ed4ae 100644
+--- a/node_modules/next/dist/shared/lib/dynamic.js
++++ b/node_modules/next/dist/shared/lib/dynamic.js
+@@ -39,30 +39,39 @@ function dynamic(dynamicOptions, options) {
+     }
+     // Support for passing options, eg: dynamic(import('../hello-world'), {loading: () => <p>Loading something</p>})
+     loadableOptions = _extends({}, loadableOptions, options);
+-    const loaderFn = loadableOptions.loader;
+-    const loader = ()=>loaderFn != null ? loaderFn().then(convertModule) : Promise.resolve(convertModule(()=>null));
+     // coming from build/babel/plugins/react-loadable-plugin.js
+     if (loadableOptions.loadableGenerated) {
+         loadableOptions = _extends({}, loadableOptions, loadableOptions.loadableGenerated);
+         delete loadableOptions.loadableGenerated;
+     }
+-    // support for disabling server side rendering, eg: dynamic(() => import('../hello-world'), {ssr: false}).
+-    if (typeof loadableOptions.ssr === 'boolean' && !loadableOptions.ssr) {
+-        delete loadableOptions.webpack;
+-        delete loadableOptions.modules;
++    // support for disabling server side rendering, eg: dynamic(import('../hello-world'), {ssr: false}).
++    // skip `ssr` for suspense mode and opt-in React.lazy directly
++    if (typeof loadableOptions.ssr === 'boolean' && !loadableOptions.suspense) {
++        if (!loadableOptions.ssr) {
++            delete loadableOptions.ssr;
++            return noSSR(loadableFn, loadableOptions);
++        }
++        delete loadableOptions.ssr;
+     }
+-    return loadableFn(_extends({}, loadableOptions, {
+-        loader: loader
+-    }));
++    return loadableFn(loadableOptions);
+ }
+-// Normalize loader to return the module as form { default: Component } for `React.lazy`.
+-// Also for backward compatible since next/dynamic allows to resolve a component directly with loader
+-// Client component reference proxy need to be converted to a module.
+-function convertModule(mod) {
+-    var ref;
+-    return {
+-        default: ((ref = mod) == null ? void 0 : ref.default) || mod
+-    };
++const isServerSide = typeof window === 'undefined';
++function noSSR(LoadableInitializer, loadableOptions) {
++    // Removing webpack and modules means react-loadable won't try preloading
++    delete loadableOptions.webpack;
++    delete loadableOptions.modules;
++    // This check is necessary to prevent react-loadable from initializing on the server
++    if (!isServerSide) {
++        return LoadableInitializer(loadableOptions);
++    }
++    const Loading = loadableOptions.loading;
++    // This will only be rendered on the server side
++    return ()=>/*#__PURE__*/ _react.default.createElement(Loading, {
++            error: null,
++            isLoading: true,
++            pastDelay: false,
++            timedOut: false
++        });
+ }
+ 
+ if ((typeof exports.default === 'function' || (typeof exports.default === 'object' && exports.default !== null)) && typeof exports.default.__esModule === 'undefined') {
+diff --git a/node_modules/next/dist/shared/lib/loadable.js b/node_modules/next/dist/shared/lib/loadable.js
+index ce93e4a..60820c2 100644
+--- a/node_modules/next/dist/shared/lib/loadable.js
++++ b/node_modules/next/dist/shared/lib/loadable.js
+@@ -6,8 +6,8 @@ exports.default = void 0;
+ var _extends = require("@swc/helpers/lib/_extends.js").default;
+ var _interop_require_default = require("@swc/helpers/lib/_interop_require_default.js").default;
+ var _react = _interop_require_default(require("react"));
+-var _dynamicNoSsr = require("./dynamic-no-ssr");
+ var _loadableContext = require("./loadable-context");
++const { useSyncExternalStore  } = process.env.__NEXT_REACT_ROOT ? require('react') : require('use-sync-external-store/shim');
+ const ALL_INITIALIZERS = [];
+ const READY_INITIALIZERS = [];
+ let initialized = false;
+@@ -29,6 +29,9 @@ function load(loader) {
+     });
+     return state;
+ }
++function resolve(obj) {
++    return obj && obj.__esModule ? obj.default : obj;
++}
+ function createLoadableComponent(loadFn, options) {
+     let opts = Object.assign({
+         loader: null,
+@@ -39,7 +42,9 @@ function createLoadableComponent(loadFn, options) {
+         modules: null,
+         ssr: true
+     }, options);
+-    opts.lazy = /*#__PURE__*/ _react.default.lazy(opts.loader);
++    if (opts.suspense) {
++      opts.lazy = _react.default.lazy(opts.loader);
++    }
+     /** @type LoadableSubscription */ let subscription = null;
+     function init() {
+         if (!subscription) {
+@@ -83,17 +88,28 @@ function createLoadableComponent(loadFn, options) {
+     }
+     function LoadableComponent(props) {
+         useLoadableModule();
+-        const Loading = opts.loading;
+-        const fallbackElement = /*#__PURE__*/ _react.default.createElement(Loading, {
+-            isLoading: true,
+-            pastDelay: true,
+-            error: null
+-        });
+-        const Wrap = opts.ssr ? _react.default.Fragment : _dynamicNoSsr.NoSSR;
+-        const Lazy = opts.lazy;
+-        return /*#__PURE__*/ _react.default.createElement(_react.default.Suspense, {
+-            fallback: fallbackElement
+-        }, /*#__PURE__*/ _react.default.createElement(Wrap, null, /*#__PURE__*/ _react.default.createElement(Lazy, Object.assign({}, props))));
++        const state = useSyncExternalStore(subscription.subscribe, subscription.getCurrentValue, subscription.getCurrentValue);
++        _react.default.useImperativeHandle(ref, ()=>({
++                retry: subscription.retry
++            }), []);
++        return _react.default.useMemo(()=>{
++            if (state.loading || state.error) {
++                return _react.default.createElement(resolve(opts.loading), {
++                    isLoading: state.loading,
++                    pastDelay: state.pastDelay,
++                    timedOut: state.timedOut,
++                    error: state.error,
++                    retry: subscription.retry
++                });
++            } else if (state.loaded) {
++                return _react.default.createElement(resolve(state.loaded), props);
++            } else {
++                return null;
++            }
++        }, [
++            props,
++            state
++        ]);
+     }
+     LoadableComponent.preload = ()=>init();
+     LoadableComponent.displayName = 'LoadableComponent';

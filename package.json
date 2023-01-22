@@ -1,0 +1,24 @@
+{
+  "name": "next-13-preact",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "postinstall": "patch-package"
+  },
+  "dependencies": {
+    "@next/font": "13.1.4",
+    "next": "^13.1.4",
+    "next-plugin-preact": "^3.0.7",
+    "patch-package": "^6.5.1",
+    "preact": "^10.11.3",
+    "preact-render-to-string": "^5.2.6",
+    "react": "npm:@preact/compat@^17.1.2",
+    "react-dom": "npm:@preact/compat@^17.1.2",
+    "react-ssr-prepass": "npm:preact-ssr-prepass@^1.2.0",
+    "use-sync-external-store": "^1.2.0"
+  }
+}
