@@ -1,8 +1,8 @@
 diff --git a/node_modules/next/dist/build/webpack-config.js b/node_modules/next/dist/build/webpack-config.js
-index 417e8b2..949b62a 100644
+index e999c6a..0c42b8e 100644
 --- a/node_modules/next/dist/build/webpack-config.js
 +++ b/node_modules/next/dist/build/webpack-config.js
-@@ -1747,9 +1747,7 @@ const EXTERNAL_PACKAGES = require("../lib/server-external-packages.json");
+@@ -1752,9 +1752,7 @@ const EXTERNAL_PACKAGES = require("../lib/server-external-packages.json");
  const NEXT_PROJECT_ROOT = _path.default.join(__dirname, "..", "..");
  const NEXT_PROJECT_ROOT_DIST = _path.default.join(NEXT_PROJECT_ROOT, "dist");
  const NEXT_PROJECT_ROOT_DIST_CLIENT = _path.default.join(NEXT_PROJECT_ROOT_DIST, "client");
@@ -14,7 +14,7 @@ index 417e8b2..949b62a 100644
      /next[\\/]dist[\\/](esm[\\/])?shared[\\/]lib/,
      /next[\\/]dist[\\/](esm[\\/])?client/,
 diff --git a/node_modules/next/dist/server/render.js b/node_modules/next/dist/server/render.js
-index ebd8a9b..f3537c4 100644
+index ebd8a9b..d36dc71 100644
 --- a/node_modules/next/dist/server/render.js
 +++ b/node_modules/next/dist/server/render.js
 @@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
@@ -48,7 +48,7 @@ index ebd8a9b..f3537c4 100644
                  router
              })));
          };
-+				if (!process.env.__NEXT_REACT_ROOT) {
++        if (!process.env.__NEXT_REACT_ROOT) {
 +            // Enabling react legacy rendering mode: __NEXT_REACT_ROOT = false
 +            if (Document.getInitialProps) {
 +                const documentInitialProps = await loadDocumentInitialProps();
@@ -88,23 +88,15 @@ index ebd8a9b..f3537c4 100644
          // Always using react concurrent rendering mode with required react version 18.x
          const renderShell1 = async (EnhancedApp, EnhancedComponent)=>{
              const content = renderContent(EnhancedApp, EnhancedComponent);
-@@ -726,6 +763,7 @@ async function renderToHTML(req, res, pathname, query, renderOpts) {
-                 }
-             });
-         };
-+
-         const createBodyResult = (initialStream, suffix)=>{
-             // this must be called inside bodyResult so appWrappers is
-             // up to date when `wrapApp` is called
-@@ -783,6 +821,7 @@ async function renderToHTML(req, res, pathname, query, renderOpts) {
+@@ -783,6 +820,7 @@ async function renderToHTML(req, res, pathname, query, renderOpts) {
              styles
          };
      };
-+		}
++    };
      const documentResult = await renderDocument();
      if (!documentResult) {
          return null;
-@@ -859,7 +898,7 @@ async function renderToHTML(req, res, pathname, query, renderOpts) {
+@@ -859,7 +897,7 @@ async function renderToHTML(req, res, pathname, query, renderOpts) {
      }, /*#__PURE__*/ _react.default.createElement(_htmlContext.HtmlContext.Provider, {
          value: htmlProps1
      }, documentResult.documentElement(htmlProps1)));
@@ -114,7 +106,7 @@ index ebd8a9b..f3537c4 100644
          const nonRenderedComponents = [];
          const expectedDocComponents = [
 diff --git a/node_modules/next/dist/shared/lib/dynamic.js b/node_modules/next/dist/shared/lib/dynamic.js
-index f8f2711..f8ed4ae 100644
+index f8f2711..953d913 100644
 --- a/node_modules/next/dist/shared/lib/dynamic.js
 +++ b/node_modules/next/dist/shared/lib/dynamic.js
 @@ -39,30 +39,39 @@ function dynamic(dynamicOptions, options) {
@@ -166,11 +158,11 @@ index f8f2711..f8ed4ae 100644
 +    const Loading = loadableOptions.loading;
 +    // This will only be rendered on the server side
 +    return ()=>/*#__PURE__*/ _react.default.createElement(Loading, {
-+            error: null,
-+            isLoading: true,
-+            pastDelay: false,
-+            timedOut: false
-+        });
++        error: null,
++        isLoading: true,
++        pastDelay: false,
++        timedOut: false
++    });
  }
  
  if ((typeof exports.default === 'function' || (typeof exports.default === 'object' && exports.default !== null)) && typeof exports.default.__esModule === 'undefined') {
