@@ -167,7 +167,7 @@ index f8f2711..953d913 100644
  
  if ((typeof exports.default === 'function' || (typeof exports.default === 'object' && exports.default !== null)) && typeof exports.default.__esModule === 'undefined') {
 diff --git a/node_modules/next/dist/shared/lib/loadable.js b/node_modules/next/dist/shared/lib/loadable.js
-index ce93e4a..60820c2 100644
+index ce93e4a..316b248 100644
 --- a/node_modules/next/dist/shared/lib/loadable.js
 +++ b/node_modules/next/dist/shared/lib/loadable.js
 @@ -6,8 +6,8 @@ exports.default = void 0;
@@ -201,7 +201,7 @@ index ce93e4a..60820c2 100644
      /** @type LoadableSubscription */ let subscription = null;
      function init() {
          if (!subscription) {
-@@ -83,17 +88,28 @@ function createLoadableComponent(loadFn, options) {
+@@ -83,17 +88,29 @@ function createLoadableComponent(loadFn, options) {
      }
      function LoadableComponent(props) {
          useLoadableModule();
@@ -217,6 +217,7 @@ index ce93e4a..60820c2 100644
 -            fallback: fallbackElement
 -        }, /*#__PURE__*/ _react.default.createElement(Wrap, null, /*#__PURE__*/ _react.default.createElement(Lazy, Object.assign({}, props))));
 +        const state = useSyncExternalStore(subscription.subscribe, subscription.getCurrentValue, subscription.getCurrentValue);
++        const ref = _react.default.useRef();
 +        _react.default.useImperativeHandle(ref, ()=>({
 +                retry: subscription.retry
 +            }), []);
