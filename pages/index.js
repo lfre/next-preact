@@ -2,6 +2,12 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
+import dynamic from 'next/dynamic';
+
+const SSRDynamic = dynamic(
+  () => import('@/components/dynamic/ssr'));
+const BrowserDynamic = dynamic(
+  () => import('@/components/dynamic/browser'), { ssr: false });
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,6 +26,8 @@ export default function Home() {
             Get started by editing&nbsp;
             <code className={styles.code}>pages/index.js</code>
           </p>
+          <SSRDynamic />
+          <BrowserDynamic />
           <div>
             <a
               href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
