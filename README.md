@@ -13,7 +13,7 @@ If you're unable to use the `app` directory with React Server Components (in bet
 My approach was to achieve this with the least amount of changes to Next.js pointing back to Next 12.3.4. So I can't promise that this will work for all your use cases. I also can't promise that this will automatically work in future versions. Proceed with caution.
 
 ## Supported Next.js version
-13.2.*
+13.4.*
 
 ## Dependencies
 
