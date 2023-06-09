@@ -10,7 +10,6 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
-    "@next/font": "13.4.4",
     "next": "^13.4.4",
     "next-plugin-preact": "^3.0.7",
     "patch-package": "^7.0.0",
