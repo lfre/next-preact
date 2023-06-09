@@ -1,0 +1,116 @@
+diff --git a/node_modules/next/dist/build/webpack-config.js b/node_modules/next/dist/build/webpack-config.js
+index f0f8688..e227cc3 100644
+--- a/node_modules/next/dist/build/webpack-config.js
++++ b/node_modules/next/dist/build/webpack-config.js
+@@ -139,9 +139,7 @@ const EXTERNAL_PACKAGES = require("../lib/server-external-packages.json");
+ const NEXT_PROJECT_ROOT = _path.default.join(__dirname, "..", "..");
+ const NEXT_PROJECT_ROOT_DIST = _path.default.join(NEXT_PROJECT_ROOT, "dist");
+ const NEXT_PROJECT_ROOT_DIST_CLIENT = _path.default.join(NEXT_PROJECT_ROOT_DIST, "client");
+-if (parseInt(_react.default.version) < 18) {
+-    throw new Error("Next.js requires react >= 18.2.0 to be installed.");
+-}
++
+ const babelIncludeRegexes = [
+     /next[\\/]dist[\\/](esm[\\/])?shared[\\/]lib/,
+     /next[\\/]dist[\\/](esm[\\/])?client/,
+diff --git a/node_modules/next/dist/server/render.js b/node_modules/next/dist/server/render.js
+index a1f8648..5f2b31e 100644
+--- a/node_modules/next/dist/server/render.js
++++ b/node_modules/next/dist/server/render.js
+@@ -25,7 +25,7 @@ _export(exports, {
+     }
+ });
+ const _react = /*#__PURE__*/ _interop_require_default(require("react"));
+-const _serverbrowser = /*#__PURE__*/ _interop_require_default(require("react-dom/server.browser"));
++const _serverBrowser = /*#__PURE__*/ _interop_require_default(require("react-dom/server"));
+ const _styledjsx = require("styled-jsx");
+ const _constants = require("../lib/constants");
+ const _constants1 = require("../shared/lib/constants");
+@@ -79,7 +79,7 @@ function noRouter() {
+     throw new Error(message);
+ }
+ async function renderToString(element) {
+-    const renderStream = await _serverbrowser.default.renderToReadableStream(element);
++    const renderStream = await _serverBrowser.default.renderToReadableStream(element);
+     await renderStream.allReady;
+     return (0, _nodewebstreamshelper.streamToString)(renderStream);
+ }
+@@ -698,7 +698,7 @@ async function renderToHTML(req, res, pathname, query, renderOpts) {
+                     if (renderShell) {
+                         renderShell(App, Component);
+                     }
+-                    const html = await renderToString(/*#__PURE__*/ _react.default.createElement(Body, null, /*#__PURE__*/ _react.default.createElement(ErrorDebug, {
++                    const html = _serverBrowser.default.renderToString(/*#__PURE__*/ _react.default.createElement(Body, null, /*#__PURE__*/ _react.default.createElement(ErrorDebug, {
+                         error: ctx.err
+                     })));
+                     return {
+@@ -720,7 +720,7 @@ async function renderToHTML(req, res, pathname, query, renderOpts) {
+                         };
+                     });
+                 }
+-                const html = await renderToString(/*#__PURE__*/ _react.default.createElement(Body, null, /*#__PURE__*/ _react.default.createElement(AppContainerWithIsomorphicFiberStructure, null, renderPageTree(EnhancedApp, EnhancedComponent, {
++                const html = _serverBrowser.default.renderToString(/*#__PURE__*/ _react.default.createElement(Body, null, /*#__PURE__*/ _react.default.createElement(AppContainerWithIsomorphicFiberStructure, null, renderPageTree(EnhancedApp, EnhancedComponent, {
+                     ...props,
+                     router
+                 }))));
+@@ -755,6 +755,43 @@ async function renderToHTML(req, res, pathname, query, renderOpts) {
+                 router
+             })));
+         };
++        if (!process.env.__NEXT_REACT_ROOT) {
++            // Enabling react legacy rendering mode: __NEXT_REACT_ROOT = false
++            if (Document.getInitialProps) {
++                const documentInitialProps = await loadDocumentInitialProps();
++                if (documentInitialProps === null) return null;
++                const { docProps , documentCtx  } = documentInitialProps;
++                return {
++                    bodyResult: (suffix)=>(0, _nodewebstreamshelper.streamFromArray)([
++                            docProps.html,
++                            suffix
++                        ]),
++                    documentElement: (htmlProps)=>/*#__PURE__*/ _react.default.createElement(Document, Object.assign({}, htmlProps, docProps)),
++                    head: docProps.head,
++                    headTags: [],
++                    styles: docProps.styles
++                };
++            } else {
++                const content = renderContent(App, Component);
++                // for non-concurrent rendering we need to ensure App is rendered
++                // before _document so that updateHead is called/collected before
++                // rendering _document's head
++                const result = _serverBrowser.default.renderToString(content);
++                const bodyResult = (suffix)=>(0, _nodewebstreamshelper.streamFromArray)([
++                        result,
++                        suffix
++                    ]);
++                const styles = jsxStyleRegistry.styles();
++                jsxStyleRegistry.flush();
++                return {
++                    bodyResult,
++                    documentElement: ()=>Document(),
++                    head,
++                    headTags: [],
++                    styles
++                };
++            }
++        } else {
+         // Always using react concurrent rendering mode with required react version 18.x
+         const renderShell = async (EnhancedApp, EnhancedComponent)=>{
+             const content = renderContent(EnhancedApp, EnhancedComponent);
+@@ -823,6 +860,7 @@ async function renderToHTML(req, res, pathname, query, renderOpts) {
+             styles
+         };
+     };
++}
+     (_getTracer_getRootSpanAttributes = (0, _tracer.getTracer)().getRootSpanAttributes()) == null ? void 0 : _getTracer_getRootSpanAttributes.set("next.route", renderOpts.pathname);
+     const documentResult = await (0, _tracer.getTracer)().trace(_constants2.RenderSpan.renderDocument, {
+         spanName: `render route (pages) ${renderOpts.pathname}`,
+@@ -907,7 +945,7 @@ async function renderToHTML(req, res, pathname, query, renderOpts) {
+     }, /*#__PURE__*/ _react.default.createElement(_htmlcontext.HtmlContext.Provider, {
+         value: htmlProps
+     }, documentResult.documentElement(htmlProps)));
+-    const documentHTML = await (0, _tracer.getTracer)().trace(_constants2.RenderSpan.renderToString, async ()=>renderToString(document));
++    const documentHTML = await (0, _tracer.getTracer)().trace(_constants2.RenderSpan.renderToString, async ()=> _serverBrowser.default.renderToString(document));
+     if (process.env.NODE_ENV !== "production") {
+         const nonRenderedComponents = [];
+         const expectedDocComponents = [
