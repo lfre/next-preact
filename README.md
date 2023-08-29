@@ -18,7 +18,7 @@ My approach was to achieve this with the least amount of changes to Next.js poin
 [CodeSandbox](https://codesandbox.io/p/github/lfre/next-13-preact/main)
 
 ## Supported Next.js version
-13.4.*
+13.4.19
 
 ## Dependencies
 
@@ -29,7 +29,11 @@ My approach was to achieve this with the least amount of changes to Next.js poin
 
 Follow the instructions in [next-preact-plugin](https://github.com/preactjs/next-plugin-preact)
 
-Run `patch-package` in `postinstall`:
+Copy the `patches` directory to your project root.
+
+> If you're using `patch-package` already, add the `.patch` included here to your `patches` directory.
+
+Install [`patch-package`](https://www.npmjs.com/package/patch-package), and run `patch-package` in `postinstall`:
 
 ```json
 {
