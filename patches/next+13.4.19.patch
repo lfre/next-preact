@@ -1,5 +1,5 @@
 diff --git a/node_modules/next/dist/build/webpack-config.js b/node_modules/next/dist/build/webpack-config.js
-index 6a90681..a83b8c5 100644
+index 61ccca0..fcc2950 100644
 --- a/node_modules/next/dist/build/webpack-config.js
 +++ b/node_modules/next/dist/build/webpack-config.js
 @@ -140,9 +140,7 @@ const NEXT_PROJECT_ROOT = _path.default.join(__dirname, "..", "..");
@@ -14,10 +14,10 @@ index 6a90681..a83b8c5 100644
      /next[\\/]dist[\\/](esm[\\/])?shared[\\/]lib/,
      /next[\\/]dist[\\/](esm[\\/])?client/,
 diff --git a/node_modules/next/dist/server/render.js b/node_modules/next/dist/server/render.js
-index bf9f486..baf94dd 100644
+index 9ee37d1..e6c3766 100644
 --- a/node_modules/next/dist/server/render.js
 +++ b/node_modules/next/dist/server/render.js
-@@ -29,7 +29,7 @@ _export(exports, {
+@@ -25,7 +25,7 @@ _export(exports, {
      }
  });
  const _react = /*#__PURE__*/ _interop_require_default(require("react"));
@@ -26,7 +26,7 @@ index bf9f486..baf94dd 100644
  const _styledjsx = require("styled-jsx");
  const _constants = require("../lib/constants");
  const _constants1 = require("../shared/lib/constants");
-@@ -705,7 +705,7 @@ async function renderToHTMLImpl(req, res, pathname, query, renderOpts, extra) {
+@@ -682,7 +682,7 @@ async function renderToHTMLImpl(req, res, pathname, query, renderOpts, extra) {
                      if (renderShell) {
                          renderShell(App, Component);
                      }
@@ -35,7 +35,7 @@ index bf9f486..baf94dd 100644
                          error: ctx.err
                      })));
                      return {
-@@ -727,7 +727,7 @@ async function renderToHTMLImpl(req, res, pathname, query, renderOpts, extra) {
+@@ -704,7 +704,7 @@ async function renderToHTMLImpl(req, res, pathname, query, renderOpts, extra) {
                          };
                      });
                  }
@@ -44,7 +44,7 @@ index bf9f486..baf94dd 100644
                      ...props,
                      router
                  }))));
-@@ -762,6 +762,43 @@ async function renderToHTMLImpl(req, res, pathname, query, renderOpts, extra) {
+@@ -739,6 +739,43 @@ async function renderToHTMLImpl(req, res, pathname, query, renderOpts, extra) {
                  router
              })));
          };
@@ -88,15 +88,15 @@ index bf9f486..baf94dd 100644
          // Always using react concurrent rendering mode with required react version 18.x
          const renderShell = async (EnhancedApp, EnhancedComponent)=>{
              const content = renderContent(EnhancedApp, EnhancedComponent);
-@@ -830,6 +867,7 @@ async function renderToHTMLImpl(req, res, pathname, query, renderOpts, extra) {
+@@ -807,6 +844,7 @@ async function renderToHTMLImpl(req, res, pathname, query, renderOpts, extra) {
              styles
          };
      };
-+}
++};
      (_getTracer_getRootSpanAttributes = (0, _tracer.getTracer)().getRootSpanAttributes()) == null ? void 0 : _getTracer_getRootSpanAttributes.set("next.route", renderOpts.pathname);
      const documentResult = await (0, _tracer.getTracer)().trace(_constants2.RenderSpan.renderDocument, {
          spanName: `render route (pages) ${renderOpts.pathname}`,
-@@ -914,7 +952,7 @@ async function renderToHTMLImpl(req, res, pathname, query, renderOpts, extra) {
+@@ -891,7 +929,7 @@ async function renderToHTMLImpl(req, res, pathname, query, renderOpts, extra) {
      }, /*#__PURE__*/ _react.default.createElement(_htmlcontext.HtmlContext.Provider, {
          value: htmlProps
      }, documentResult.documentElement(htmlProps)));
