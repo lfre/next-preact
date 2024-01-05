@@ -1,5 +1,7 @@
 # Next 13 with Preact
 
+> Since Next 13.5, Next compiles some of its dist folder into the "dist/compiled/next-server" folder only when publishing to NPM. This means the file "dist/server/render.js" is not the one that runs, and thus the patch does nothing. Instead the patches would have to be applied to "dist/compiled/next-server/pages.runtime.dev.js" and "pages.runtime.prod.js" accordingly. These files are minified so they're much harder to modify. Alternatively, you could try copying Next.js webpack config and bundle them yourself after the patch, but it's not a trivial task. I hope this was helpful while it lasted. I'll leave the repo up for reference. 👋
+
 ![](https://media3.giphy.com/media/s239QJIh56sRW/giphy.gif)
 
 _...Sighs in JavaScript..._
