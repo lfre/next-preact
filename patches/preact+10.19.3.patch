@@ -1,8 +1,8 @@
 diff --git a/node_modules/preact/compat/server.js b/node_modules/preact/compat/server.js
-index 7156872..51cc022 100644
+index 7156872..a222ac6 100644
 --- a/node_modules/preact/compat/server.js
 +++ b/node_modules/preact/compat/server.js
-@@ -9,7 +9,23 @@ try {
+@@ -9,7 +9,21 @@ try {
  	);
  }
  
@@ -10,9 +10,7 @@ index 7156872..51cc022 100644
 +	return Promise.resolve().then(function() {
 +		const stream = new ReadableStream({
 +			start(controller) {
-+				const output = renderToString(element);
-+				const buffer = new TextEncoder().encode(output);
-+				controller.enqueue(buffer);
++				controller.enqueue(new TextEncoder().encode(renderToString(element)));
 +				controller.close();
 +			}
 +		});
