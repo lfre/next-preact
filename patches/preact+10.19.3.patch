@@ -26,3 +26,19 @@ index 7156872..51cc022 100644
 +	renderToReadableStream: renderToReadableStream,
  	renderToStaticMarkup: renderToString
  };
+diff --git a/node_modules/preact/package.json b/node_modules/preact/package.json
+index a2d6871..d89d559 100644
+--- a/node_modules/preact/package.json
++++ b/node_modules/preact/package.json
+@@ -75,6 +75,11 @@
+       "import": "./compat/server.mjs",
+       "require": "./compat/server.js"
+     },
++    "./compat/server.browser": {
++      "browser": "./compat/server.browser.js",
++      "import": "./compat/server.mjs",
++      "require": "./compat/server.js"
++    },
+     "./compat/jsx-runtime": {
+       "types": "./jsx-runtime/src/index.d.ts",
+       "import": "./compat/jsx-runtime.mjs",
