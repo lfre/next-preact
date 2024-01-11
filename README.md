@@ -47,6 +47,6 @@ Install [`patch-package`](https://www.npmjs.com/package/patch-package), and run 
 ## Patches
 
 - Remove the check for React 18 in `next/dist/build/webpack-config.js`
-- Switch references of `server.browser.js` to `server.js` in `next/dist/compiled/next-server/pages.runtime.dev.js` and `next/dist/compiled/next-server/pages.runtime.prod.js` (Alternatively, this could be done by adding the necessary mapping to preact exports, but patch-package does not modify package.json).
+- Add `server.browser` export to `preact/package.json`
 - Add `renderToReadableStream` to `preact/compat/server.js`
   
