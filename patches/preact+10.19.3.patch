@@ -1,0 +1,28 @@
+diff --git a/node_modules/preact/compat/server.js b/node_modules/preact/compat/server.js
+index 7156872..51cc022 100644
+--- a/node_modules/preact/compat/server.js
++++ b/node_modules/preact/compat/server.js
+@@ -9,7 +9,23 @@ try {
+ 	);
+ }
+ 
++function renderToReadableStream(element) {
++	return Promise.resolve().then(function() {
++		const stream = new ReadableStream({
++			start(controller) {
++				const output = renderToString(element);
++				const buffer = new TextEncoder().encode(output);
++				controller.enqueue(buffer);
++				controller.close();
++			}
++		});
++		stream.allReady = true;
++		return stream;
++	});
++}
++
+ module.exports = {
+ 	renderToString: renderToString,
++	renderToReadableStream: renderToReadableStream,
+ 	renderToStaticMarkup: renderToString
+ };
