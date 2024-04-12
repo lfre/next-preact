@@ -20,7 +20,7 @@ My approach was to achieve this with the least amount of changes to Next.js poin
 [CodeSandbox](https://codesandbox.io/p/github/lfre/next-13-preact/main)
 
 ## Supported Next.js version
-14.0.4
+14.2
 
 ## Dependencies
 
