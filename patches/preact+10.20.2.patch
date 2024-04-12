@@ -25,7 +25,7 @@ index 7156872..a222ac6 100644
  	renderToStaticMarkup: renderToString
  };
 diff --git a/node_modules/preact/package.json b/node_modules/preact/package.json
-index a2d6871..d89d559 100644
+index 688d96e..5f14a14 100644
 --- a/node_modules/preact/package.json
 +++ b/node_modules/preact/package.json
 @@ -75,6 +75,11 @@

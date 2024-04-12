@@ -1,8 +1,8 @@
 diff --git a/node_modules/next/dist/build/webpack-config.js b/node_modules/next/dist/build/webpack-config.js
-index 14ee991..59cb2ed 100644
+index 833a913..12f83a3 100644
 --- a/node_modules/next/dist/build/webpack-config.js
 +++ b/node_modules/next/dist/build/webpack-config.js
-@@ -145,9 +145,6 @@ const EXTERNAL_PACKAGES = require("../lib/server-external-packages.json");
+@@ -152,9 +152,6 @@ const EXTERNAL_PACKAGES = require("../lib/server-external-packages.json");
  const NEXT_PROJECT_ROOT = _path.default.join(__dirname, "..", "..");
  const NEXT_PROJECT_ROOT_DIST = _path.default.join(NEXT_PROJECT_ROOT, "dist");
  const NEXT_PROJECT_ROOT_DIST_CLIENT = _path.default.join(NEXT_PROJECT_ROOT_DIST, "client");
