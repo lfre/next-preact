@@ -1,4 +1,6 @@
-# Next 13 and 14 with Preact
+# Next with Preact
+
+## Works with ➡️ 14.2
 
 > Since Next 13.5, Next compiles some of its dist folder into the "dist/compiled/next-server" folder only when publishing to NPM. This means the file "dist/server/render.js" is not the one that runs, and thus the patch does nothing. Instead the patches would have to be applied to "dist/compiled/next-server/pages.runtime.dev.js" and "pages.runtime.prod.js" accordingly. These files are minified so they're much harder to modify. The approach has changed to instead patch Preact with a custom version of `renderToReadableStream` that works with Next.
 
@@ -18,9 +20,6 @@ My approach was to achieve this with the least amount of changes to Next.js poin
 
 [Live URL](https://7s2mt8-3000.csb.app/) |
 [CodeSandbox](https://codesandbox.io/p/github/lfre/next-13-preact/main)
-
-## Supported Next.js version
-14.2
 
 ## Dependencies
 
