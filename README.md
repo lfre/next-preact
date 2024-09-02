@@ -45,7 +45,7 @@ Install [`patch-package`](https://www.npmjs.com/package/patch-package), and run 
 ```
 ## Patches
 
-- Remove the check for React 18 in `next/dist/build/webpack-config.js`
-- Add `server.browser` export to `preact/package.json`
-- Add `renderToReadableStream` to `preact/compat/server.js`
+- Remove the check for React 18 in `next/dist/build/webpack-config.js`. Waiting for [this PR](https://github.com/preactjs/compat-alias-package/pull/13)
+- Add `server.browser` export to `preact/package.json`. Won't be done in Preact. [Issue](https://github.com/preactjs/preact/issues/3787)
+- Add `renderToReadableStream` to `preact/compat/server.js`. Can be exposed similar to `renderToPipeableStream` in [this PR](https://github.com/preactjs/preact/pull/4395)
   
