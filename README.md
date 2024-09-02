@@ -8,9 +8,9 @@
 
 _...Sighs in JavaScript..._
 
-If you're unable to use the `app` directory with React Server Components, streaming SSR, Suspense and other React 18 features, but still want/need improvements to Next and its utilities, Next 13+ with Preact is for you.
+If you're unable to use the `app` directory with React Server Components, streaming SSR, Suspense and other React 18 features, but still want/need improvements to Next and its utilities, Next with Preact is for you.
 
-> Next 13 requires Preact to add support for [`renderToReadableStream`](https://github.com/preactjs/preact-render-to-string/pull/259).
+> Preact added `renderToReadableStream` in version [6.5.0](https://github.com/preactjs/preact-render-to-string/pull/296). However, App Router is stil incompatible with Preact due to some internal mismatching within hooks.
 
 ## ⚠️ Disclaimer ⚠️
 
