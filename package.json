@@ -1,5 +1,5 @@
 {
-  "name": "next-13-preact",
+  "name": "next-preact",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,10 +10,10 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
-    "next": "^14.2.13",
+    "next": "^15.0.3",
     "next-plugin-preact": "^3.0.7",
     "patch-package": "^8.0.0",
-    "preact": "^10.24.1",
+    "preact": "^10.24.3",
     "preact-render-to-string": "^6.5.11",
     "react": "npm:@preact/compat@^18.3.1",
     "react-dom": "npm:@preact/compat@^18.3.1",
