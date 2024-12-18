@@ -1,6 +1,6 @@
 # Next with Preact
 
-## Works up to ➡️ 15.0.3
+## Works up to ➡️ 15.1.1
 
 > Since Next 13.5, Next compiles some of its dist folder into the "dist/compiled/next-server" folder only when publishing to NPM. This means the file "dist/server/render.js" is not the one that runs, and thus the patch does nothing. Instead the patches would have to be applied to "dist/compiled/next-server/pages.runtime.dev.js" and "pages.runtime.prod.js" accordingly. These files are minified so they're much harder to modify. The approach has changed to instead patch Preact with a custom version of `renderToReadableStream` that works with Next.
 
@@ -8,7 +8,7 @@
 
 _...Sighs in JavaScript..._
 
-If you're unable to use the `app` directory with React Server Components, streaming SSR, Suspense and other React 18 features, but still want/need improvements to Next and its utilities, Next with Preact is for you.
+If you're unable to use the `app` directory with React Server Components, streaming and other React 18+ features, but still want/need improvements to Next and its utilities, Next with Preact is for you.
 
 > Preact added `renderToReadableStream` in version [6.5.0](https://github.com/preactjs/preact-render-to-string/pull/296). However, App Router is stil incompatible with Preact due to some internal mismatching within hooks.
 
@@ -28,7 +28,15 @@ My approach was to achieve this with the least amount of changes to Next.js poin
 
 ## Usage
 
-Follow the instructions in [next-preact-plugin](https://github.com/preactjs/next-plugin-preact)
+Follow the instructions in [next-preact-plugin](https://github.com/preactjs/next-plugin-preact), and disable `esmExternals` in your `next.config.js` to resolve this [issue](https://github.com/preactjs/next-plugin-preact/issues/61):
+
+```js
+ require('next-plugin-preact')({
+  experimental: {
+    esmExternals: false 
+  }
+ });
+```
 
 Copy the `patches` directory to your project root.
 

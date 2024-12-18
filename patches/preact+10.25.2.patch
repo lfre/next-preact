@@ -24,10 +24,10 @@ index 3eaf720..3231a4e 100644
 +	renderToReadableStream
  };
 diff --git a/node_modules/preact/package.json b/node_modules/preact/package.json
-index 3fa17f1..ee25311 100644
+index 0e91d2a..db5bb9f 100644
 --- a/node_modules/preact/package.json
 +++ b/node_modules/preact/package.json
-@@ -76,6 +76,11 @@
+@@ -84,6 +84,11 @@
        "import": "./compat/server.mjs",
        "require": "./compat/server.js"
      },
