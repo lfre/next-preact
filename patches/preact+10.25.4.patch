@@ -24,7 +24,7 @@ index 3eaf720..3231a4e 100644
 +	renderToReadableStream
  };
 diff --git a/node_modules/preact/package.json b/node_modules/preact/package.json
-index 0e91d2a..db5bb9f 100644
+index f92ca82..324d03a 100644
 --- a/node_modules/preact/package.json
 +++ b/node_modules/preact/package.json
 @@ -84,6 +84,11 @@
