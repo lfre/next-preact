@@ -1,5 +1,5 @@
 diff --git a/node_modules/preact/package.json b/node_modules/preact/package.json
-index 8de2b94..b9f6e0a 100644
+index eebbbc4..5f71820 100644
 --- a/node_modules/preact/package.json
 +++ b/node_modules/preact/package.json
 @@ -84,6 +84,10 @@
