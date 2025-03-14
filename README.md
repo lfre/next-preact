@@ -38,6 +38,12 @@ Follow the instructions in [next-preact-plugin](https://github.com/preactjs/next
  });
 ```
 
+### Hot Reloading
+
+Since Next.js 15.2.0, Next added [webpack layers](https://github.com/vercel/next.js/pull/75878), and `@prefresh/next` stopped working. This can be resolved by adding the layer to the webpack compilation. Refer to `next.config.js` for the `webpack` changes needed and more information.
+
+---
+
 Copy the `patches` directory to your project root.
 
 > If you're using `patch-package` already, add the `.patch` included here to your `patches` directory.
