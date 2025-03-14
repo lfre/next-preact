@@ -18,5 +18,9 @@
     "react": "npm:@preact/compat@^18.3.1",
     "react-dom": "npm:@preact/compat@^18.3.1",
     "react-ssr-prepass": "npm:preact-ssr-prepass@^1.2.2"
+  },
+  "overrides": {
+    "@prefresh/next": "1.7.0",
+    "@prefresh/webpack": "4.0.2"
   }
 }
