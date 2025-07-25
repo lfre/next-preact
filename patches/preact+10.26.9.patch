@@ -1,8 +1,8 @@
 diff --git a/node_modules/preact/package.json b/node_modules/preact/package.json
-index be0eda0..622c49e 100644
+index ebcc1a5..fc6755e 100644
 --- a/node_modules/preact/package.json
 +++ b/node_modules/preact/package.json
-@@ -84,6 +84,10 @@
+@@ -91,6 +91,10 @@
        "import": "./compat/server.mjs",
        "require": "./compat/server.js"
      },

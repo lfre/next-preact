@@ -12,7 +12,7 @@ module.exports = require('next-plugin-preact')({
         https://github.com/vercel/next.js/pull/75878
         Any plugin that adds additional entries needs to specify the right layer.
         Otherwise, the entry will be considered a duplicate in the bundle.
-        This is mostly fine, except that for Prefresh to work, it needs to set options.vnode in the same module in memory.
+        This is mostly fine, except that for Prefresh to work, it needs to set options.vnode on the same module in memory.
         Without a layer, the options.vnode gets set in a different object in memory than the preact module the app loads.
       */
       const prefreshPlugin = config.plugins.find((plugin) => plugin.constructor.name === 'ReloadPlugin' && plugin.options?.runsInNextJs);
