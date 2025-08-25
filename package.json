@@ -10,11 +10,11 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
-    "next": "^15.4.6",
+    "next": "^15.5.0",
     "next-plugin-preact": "^3.0.7",
     "patch-package": "^8.0.0",
-    "preact": "^10.27.0",
-    "preact-render-to-string": "^6.5.13",
+    "preact": "^10.27.1",
+    "preact-render-to-string": "^6.6.1",
     "react": "npm:@preact/compat@^18.3.1",
     "react-dom": "npm:@preact/compat@^18.3.1",
     "react-ssr-prepass": "npm:preact-ssr-prepass@^1.2.2"
