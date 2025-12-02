@@ -1,6 +1,6 @@
 # Next with Preact
 
-## Works up to Next.js 15.5 ✅
+## Works up to Next.js 16.0.6 ✅
 
 > Since Next 13.5, Next compiles some of its dist folder into the "dist/compiled/next-server" folder only when publishing to NPM. This means the file "dist/server/render.js" is not the one that runs, and thus the patch does nothing. Instead the patches would have to be applied to "dist/compiled/next-server/pages.runtime.dev.js" and "pages.runtime.prod.js" accordingly. These files are minified so they're much harder to modify. The approach changed to instead patch Preact with a custom version of `renderToReadableStream` until Preact added their own version.
 
@@ -60,4 +60,5 @@ Install [`patch-package`](https://www.npmjs.com/package/patch-package), and run 
 ## Patches
 
 - Add `server.browser` export to `preact/package.json`. Won't be done in Preact. [Issue](https://github.com/preactjs/preact/issues/3787)
+  - Export added in 10.28.0 https://github.com/preactjs/preact/pull/4940. Patch still needed to point to server.js instead of server.browser.js.
   

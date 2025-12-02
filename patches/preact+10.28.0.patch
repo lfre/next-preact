@@ -1,0 +1,13 @@
+diff --git a/node_modules/preact/package.json b/node_modules/preact/package.json
+index 4ec0986..db9fa63 100644
+--- a/node_modules/preact/package.json
++++ b/node_modules/preact/package.json
+@@ -93,7 +93,7 @@
+     },
+     "./compat/server.browser": {
+       "types": "./compat/server.d.ts",
+-      "default": "./compat/server.browser.js"
++      "default": "./compat/server.js"
+     },
+     "./compat/jsx-runtime": {
+       "types": "./jsx-runtime/src/index.d.ts",
